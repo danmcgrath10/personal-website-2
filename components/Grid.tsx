@@ -1,26 +1,25 @@
 import React from 'react'
 import { BentoGrid, BentoGridItem } from './ui/bento-grid'
 import { FaLocationArrow } from 'react-icons/fa'
+import { gridItems } from '@/data'
 
 const Grid = () => {
   return (
     <section id='about'>
-      <BentoGrid>
-        {
-            [
-                {id: 1, title: 'Title1', description: 'Description1'}, 
-                {id: 2, title: 'Title2', description: 'Description2'}, 
-                {id: 3, title: 'Title3', description: 'Description3'}
-            ].map((item, index) => (
-                <BentoGridItem
-                    key={item.id}
-                    id = {item.id}
-                    title={item.title}
-                    description={item.description}
-                    icon={<FaLocationArrow />}
-                />
-            ), [])
-        }
+      <BentoGrid className="w-full py-20">
+        {gridItems.map((item, i) => (
+          <BentoGridItem
+            id={item.id}
+            key={i}
+            title={item.title}
+            description={item.description}
+            className={item.className}
+            img={item.img}
+            imgClassName={item.imgClassName}
+            titleClassName={item.titleClassName}
+            spareImg={item.spareImg}
+          />
+        ))}
       </BentoGrid>
     </section>
   )
