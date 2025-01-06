@@ -18,19 +18,18 @@ export const AuroraBackground = ({
     <main>
       <div
         className={cn(
-          "relative flex flex-col  h-[100vh] items-center justify-center bg-zinc-50 dark:bg-zinc-900  text-slate-950 transition-bg",
+          "relative flex flex-col h-[100vh] items-center justify-center bg-black-100 text-white transition-bg",
           className
         )}
         {...props}
       >
         <div className="absolute inset-0 overflow-hidden">
           <div
-            //   I'm sorry but this is what peak developer performance looks like // trigger warning
             className={cn(
               `
-            [--white-gradient:repeating-linear-gradient(100deg,var(--white)_0%,var(--white)_7%,var(--transparent)_10%,var(--transparent)_12%,var(--white)_16%)]
-            [--dark-gradient:repeating-linear-gradient(100deg,var(--black)_0%,var(--black)_7%,var(--transparent)_10%,var(--transparent)_12%,var(--black)_16%)]
-            [--aurora:repeating-linear-gradient(100deg,var(--blue-500)_10%,var(--indigo-300)_15%,var(--blue-300)_20%,var(--violet-200)_25%,var(--blue-400)_30%)]
+            [--white-gradient:repeating-linear-gradient(100deg,rgba(255, 255, 255, 0.75)_0%,rgba(255, 255, 255, 0.75)_7%,rgba(255, 255, 255, 0.125)_10%,rgba(255, 255, 255, 0.125)_12%,rgba(255, 255, 255, 0.75)_16%)]
+            [--dark-gradient:repeating-linear-gradient(100deg,rgba(0, 3, 25, 1)_0%,rgba(0, 3, 25, 1)_7%,rgba(17, 25, 40, 0.75)_10%,rgba(17, 25, 40, 0.75)_12%,rgba(0, 3, 25, 1)_16%)]
+            [--aurora:repeating-linear-gradient(100deg,#E4ECFF_10%,#CBACF9_15%,#E4ECFF_20%,#CBACF9_25%,#E4ECFF_30%)]
             [background-image:var(--white-gradient),var(--aurora)]
             dark:[background-image:var(--dark-gradient),var(--aurora)]
             [background-size:300%,_200%]
