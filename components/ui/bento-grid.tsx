@@ -2,7 +2,6 @@
 
 import { cn } from "@/lib/utils";
 import { BackgroundGradientAnimation } from "./background-gradient-animation";
-import { GlobeDemo } from "../GlobeDemo";
 import Lottie from "react-lottie";
 import { useState } from "react";
 import animationData from "@/data/confetti.json";

@@ -2,7 +2,6 @@ import { projects } from '@/data'
 import React from 'react'
 import { CardBody, CardContainer, CardItem } from './ui/3d-card'
 import Image from 'next/image'
-import Link from "next/link";
 
 const RecentProjects = () => {
   return (
@@ -11,9 +10,7 @@ const RecentProjects = () => {
             Some of My <br />
             <span className='text-purple'>Recent Projects</span>
         </h1>
-        <div 
-            className='flex flex-wrap items-center justify-center p-4 gap-16 mt-10'
-        >
+        <div className='flex flex-wrap items-center justify-center p-4 gap-16 mt-10'>
             {projects.map((project) => (
                 <CardContainer className="inter-var">
                     <CardBody className="relative group/card  dark:hover:shadow-2xl bg-black-100 w-auto sm:w-[30rem] h-auto rounded-xl p-6 border  ">

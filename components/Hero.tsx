@@ -7,7 +7,7 @@ import { Boxes } from './ui/background-boxes'
 
 const Hero = () => {
   return (
-    <div className="h-screen w-screen relative overflow-hidden bg-black-100 flex flex-col items-center justify-center rounded-lg">
+    <div className="h-full w-full pt-36 pb-64 relative overflow-hidden bg-black-100 flex flex-col items-center justify-center rounded-lg">
       <div className="absolute inset-0 w-full h-full bg-slate-950 z-20 [mask-image:radial-gradient(transparent,white)] pointer-events-none" />
       <Boxes />
 
