@@ -87,3 +87,14 @@
     background: linear-gradient(90deg, #161a31 0%, #06091f 100%);
   }
 }
+
+
+/* Common tech stack item styles */
+.tech-stack-item {
+  @apply lg:py-3 lg:px-3 py-1 px-3 text-xs lg:text-base opacity-50 lg:opacity-100 rounded-lg text-center bg-[#10132E];
+}
+
+/* Placeholder style */
+.tech-stack-placeholder {
+  @apply lg:py-6 lg:px-5 py-4 px-3 rounded-lg text-center bg-[#10132E];
+}
