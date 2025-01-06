@@ -5,12 +5,12 @@ import Image from 'next/image'
 
 const RecentProjects = () => {
   return (
-    <div className='py-20' id={'projects'}>
+    <div className='py-10' id={'projects'}>
         <h1 className="heading">
             Some of My <br />
             <span className='text-purple'>Recent Projects</span>
         </h1>
-        <div className='flex flex-wrap items-center justify-center p-4 gap-16 mt-10'>
+        <div className='flex flex-wrap items-center justify-center p-4 mt-10 gap-16'>
             {projects.map((project) => (
                 <CardContainer className="inter-var">
                     <CardBody className="relative group/card  dark:hover:shadow-2xl bg-black-100 w-auto sm:w-[30rem] h-auto rounded-xl p-6 border  ">
