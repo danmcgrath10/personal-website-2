@@ -54,7 +54,7 @@ export const BoxesCore = ({ className, ...rest }: { className?: string }) => {
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
-                  strokeWidth="2"
+                  strokeWidth="1.5"
                   stroke="currentColor"
                   className="absolute h-6 w-10 -top-[14px] -left-[22px] text-slate-700 stroke-[1px] pointer-events-none"
                 >
