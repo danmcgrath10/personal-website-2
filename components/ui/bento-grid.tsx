@@ -7,6 +7,7 @@ import { useState } from "react";
 import animationData from "@/data/confetti.json";
 import MagicButton from "../MagicButton";
 import { IoCopyOutline } from "react-icons/io5";
+import { GlobeDemo } from "../GlobeDemo";
 
 export const BentoGrid = ({
   className,
@@ -126,7 +127,7 @@ export const BentoGridItem = ({
           </div>
 
           {/* for the github 3d globe */}
-          {/* {id === 2 && <GridGlobe />} */}
+          {id === 2 && <GlobeDemo />}
 
           {/* Tech stack list div */}
           {id === 3 && (

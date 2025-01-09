@@ -12,7 +12,7 @@ const RecentProjects = () => {
         </h1>
         <div className='flex flex-wrap items-center justify-center p-4 mt-10 gap-16'>
             {projects.map((project) => (
-                <CardContainer className="inter-var">
+                <CardContainer className="inter-var" key={project.id}>
                     <CardBody className="relative group/card  dark:hover:shadow-2xl bg-black-100 w-auto sm:w-[30rem] h-auto rounded-xl p-6 border  ">
                         <CardItem translateZ="100" className="w-full mt-4">
                             <Image
