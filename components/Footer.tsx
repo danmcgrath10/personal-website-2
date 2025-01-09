@@ -6,7 +6,7 @@ import { LinkPreview } from './ui/link-preview'
 
 const Footer = () => {
   return (
-    <footer className='w-full mb-[100px] pb-10 flex items-center flex-col md:mb-5' id='contact'>
+    <footer className='w-full mb-[100px] pb-10 flex items-center flex-col md:mb-5 mt-20' id='contact'>
         <div className="w-full absolute left-0 -bottom-72 min-h-96 overflow-clip">
             <img
             src="/footer-grid.svg"

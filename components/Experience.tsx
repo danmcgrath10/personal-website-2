@@ -10,7 +10,7 @@ const Experience = () => {
             <span className='text-purple'>Experience</span>
         </h1>
         <div className='w-full mt-12'>
-            <div className='h-[25vh] md:h-[25vh] rounded-md flex flex-col antialiased items-center relative overflow-hidden'>
+            <div className='h-[40vh] md:h-[25vh] rounded-md flex flex-col antialiased items-center relative overflow-hidden'>
                 <InfiniteMovingCards
                     items={workExperience}
                     speed='slow'
