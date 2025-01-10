@@ -95,7 +95,7 @@ export const InfiniteMovingCards = ({
         {items.map((item) => (
           <li
             key={item.id}
-            className="w-[50vw] max-w-full relative rounded-2xl border border-b-0 flex-shrink-0 border-slate-800 p-5 md:p-16 py-6 md:w-[60vw]"
+            className="max-w-[50vw] xl:max-w-[40vw] relative rounded-2xl border border-b-0 flex-shrink-0 border-slate-800 p-5 md:p-16 py-6 md:w-[60vw]"
             style={{
               background: "rgb(4,7,29)",
               backgroundColor:

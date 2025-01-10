@@ -42,6 +42,7 @@ const Footer = () => {
                     </div>
                 ))}
             </div>
+            <a href="https://www.flaticon.com/free-icons/java" title="java icons">Java icons created by Freepik - Flaticon</a>
         </div>
     </footer>
   )
