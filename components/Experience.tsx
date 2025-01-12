@@ -1,7 +1,6 @@
 import { companies, workExperience } from '@/data'
 import React from 'react'
 import { InfiniteMovingCards } from './ui/infinite-moving-cards'
-import Image from 'next/image'
 
 const Experience = () => {
   return (
@@ -23,10 +22,10 @@ const Experience = () => {
                 {companies.map(({id, img, name, nameImg}) => (
                     <div key={id} className='flex md:max-w-60 max-w-32 gap-2'>
                         {img && (
-                            <Image src={img} alt={name} className='md:w-10 w-5' />
+                            <img src={img} alt={name} className='md:w-10 w-5' />
                         )}
                         {nameImg && (
-                            <Image src={nameImg} alt={name} className='md:w-24 w-20' />
+                            <img src={nameImg} alt={name} className='md:w-24 w-20' />
                         )}
                     </div>
                 ),)}

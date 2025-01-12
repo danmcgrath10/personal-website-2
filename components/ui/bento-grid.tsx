@@ -2,13 +2,14 @@
 
 import { cn } from "@/lib/utils";
 import { BackgroundGradientAnimation } from "./background-gradient-animation";
-import Lottie from "react-lottie";
 import { useState } from "react";
 import animationData from "@/data/confetti.json";
 import MagicButton from "../MagicButton";
 import { IoCopyOutline } from "react-icons/io5";
 import { GlobeDemo } from "../GlobeDemo";
-import Image from "next/image";
+import dynamic from "next/dynamic";
+
+const Lottie = dynamic(() => import("react-lottie"), { ssr: false });
 
 export const BentoGrid = ({
   className,
@@ -83,7 +84,7 @@ export const BentoGridItem = ({
       <div className={`${id === 6 && "flex justify-center"} h-full`}>
         <div className="w-full h-full absolute">
           {img && (
-            <Image
+            <img
               src={img}
               alt={img}
               className={cn(imgClassName, "object-cover object-center ")}
@@ -95,7 +96,7 @@ export const BentoGridItem = ({
             } `}
         >
           {spareImg && (
-            <Image
+            <img
               src={spareImg}
               alt={spareImg}
               //   width={220}

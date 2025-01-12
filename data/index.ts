@@ -155,11 +155,13 @@ export const socialMedia = [
   {
     id: 1,
     img: "/git.svg",
-    url: "https://github.com/danmcgrath10"
+    url: "https://github.com/danmcgrath10",
+    alt: "githubUrl",
   },
   {
     id: 2,
     img: "/link.svg",
-    url: "https://www.linkedin.com/in/mcgrath-daniel-e/"
+    url: "https://www.linkedin.com/in/mcgrath-daniel-e/",
+    alt: "linkedinUrl",
   },
 ];
