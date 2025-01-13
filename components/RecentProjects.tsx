@@ -1,6 +1,7 @@
 import { projects } from '@/data'
 import React from 'react'
 import { CardBody, CardContainer, CardItem } from './ui/3d-card'
+import Image from 'next/image'
 
 const RecentProjects = () => {
   return (
@@ -14,7 +15,7 @@ const RecentProjects = () => {
                 <CardContainer className="inter-var" key={project.id}>
                     <CardBody className="relative group/card  dark:hover:shadow-2xl bg-black-100 w-auto sm:w-[30rem] h-auto rounded-xl p-6 border  ">
                         <CardItem translateZ="100" className="w-full mt-4">
-                            <img
+                            <Image
                                 src={project.img}
                                 height="1000"
                                 width="1000"
@@ -50,7 +51,7 @@ const RecentProjects = () => {
                                                 transform: `translateX(-${5 * index + 2}px)`,
                                             }}
                                         >
-                                            <img src={icon} alt="icon5" className="p-2" />
+                                            <Image src={icon} fill={true} alt="icon5" className="p-2" />
                                         </div>
                                     ))}
                                 </div>

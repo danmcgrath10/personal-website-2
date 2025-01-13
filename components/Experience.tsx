@@ -1,6 +1,7 @@
 import { companies, workExperience } from '@/data'
 import React from 'react'
 import { InfiniteMovingCards } from './ui/infinite-moving-cards'
+import Image from 'next/image'
 
 const Experience = () => {
   return (
