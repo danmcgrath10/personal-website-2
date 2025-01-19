@@ -113,6 +113,7 @@ export const workExperience = [
     desc: "Developed VS Code extension for React Native, streamlining component integration and reducing coding requirements, enhancing developer efficiency.",
     className: "md:col-span-2",
     thumbnail: "/exp1.svg",
+    company: "MEDITECH",
   },
   {
     id: 2,
@@ -120,6 +121,7 @@ export const workExperience = [
     desc: "Created multiple web applications to enhance team productivity: 1) An internal membership services portal that reduced manual management efforts and integrated with Stripe for efficient operations. 2) A dashboard and tools for the signal processing and field testing teams, improving workflow accessibility and data insights. Followed Scrum methodologies to ensure agile, on-time project delivery.",
     className: "md:col-span-2", // change to md:col-span-2
     thumbnail: "/exp2.svg",
+    company: "WHOOP",
   },
   {
     id: 3,
@@ -127,6 +129,7 @@ export const workExperience = [
     desc: "Rearchitected and rewrote JavaFX application that became the primary tool for product simulation testing, streamlining the testing process.",
     className: "md:col-span-2", // change to md:col-span-2
     thumbnail: "/exp3.svg",
+    company: "DEVIL-TECH",
   },
   {
     id: 4,
@@ -134,6 +137,7 @@ export const workExperience = [
     desc: "Contributed to a team developing a gamified ad experience browser extension using Angular and ASP.NET, focusing on optimizing project timelines and enhancing user engagement. Ensured alignment with company technology standards.",
     className: "md:col-span-2",
     thumbnail: "/exp4.svg",
+    company: "Criteo",
   },
   {
     id: 5,
@@ -141,6 +145,7 @@ export const workExperience = [
     desc: "Collaborated in a team to enhance analytics dashboards, deploying scalable clusters with Apache Spark. Integrated Hive and Vertica, improving data sorting and processing speeds, enhancing dashboard functionality.",
     className: "md:col-span-2",
     thumbnail: "/exp4.svg",
+    company: "Criteo",
   },
   {
     id: 6,
@@ -148,6 +153,7 @@ export const workExperience = [
     desc: "Introduced new features including dynamic data filtering, satellite tracking functionality, and additional radio interfaces, expanding the application’s data handling and communication capabilities.",
     className: "md:col-span-2",
     thumbnail: "/exp4.svg",
+    company: "DEVIL-TECH",
   },
 ];
 

@@ -104,17 +104,20 @@ export const InfiniteMovingCards = ({
             }}
           >
             <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
-              <Image
+              {/* <Image
                 src={item.thumbnail}
                 alt={item.title}
                 height={500}
                 width={500}
                 className="w-16 h-16 rounded-lg"
-              />
+              /> */}
               <div>
                 <h3 className="text-lg font-semibold text-gray-100">
                   {item.title}
                 </h3>
+                <h4 className="text-md font-thin text-gray-300">
+                  {item.company}
+                </h4>
                 <p className="mt-2 text-sm text-gray-400">{item.desc}</p>
               </div>
             </div>
