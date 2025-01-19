@@ -107,8 +107,9 @@ export const InfiniteMovingCards = ({
               <Image
                 src={item.thumbnail}
                 alt={item.title}
-                fill={true}
-                className="w-16 h-16 rounded-lg object-cover"
+                height={500}
+                width={500}
+                className="w-16 h-16 rounded-lg"
               />
               <div>
                 <h3 className="text-lg font-semibold text-gray-100">
