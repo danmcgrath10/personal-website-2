@@ -17,11 +17,13 @@ export const InfiniteMovingCards = ({
     desc: string;
     className?: string;
     thumbnail: string;
+    company: string;
   }[];
   direction?: "left" | "right";
   speed?: "fast" | "normal" | "slow";
   pauseOnHover?: boolean;
   className?: string;
+  company?: string;
 }) => {
   const containerRef = React.useRef<HTMLDivElement>(null);
   const scrollerRef = React.useRef<HTMLUListElement>(null);
