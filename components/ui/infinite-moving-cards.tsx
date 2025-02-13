@@ -106,13 +106,6 @@ export const InfiniteMovingCards = ({
             }}
           >
             <div className="flex flex-col md:flex-row items-start md:items-center gap-4">
-              {/* <Image
-                src={item.thumbnail}
-                alt={item.title}
-                height={500}
-                width={500}
-                className="w-16 h-16 rounded-lg"
-              /> */}
               <div>
                 <h3 className="text-lg font-semibold text-gray-100">
                   {item.title}
