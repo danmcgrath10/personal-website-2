@@ -1,9 +1,9 @@
 "use client";
-import { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { motion, stagger, useAnimate } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-export const TextGenerateEffect = ({
+export const TextGenerateEffect = React.memo(({
   words,
   className,
   filter = true,
@@ -15,7 +15,9 @@ export const TextGenerateEffect = ({
   duration?: number;
 }) => {
   const [scope, animate] = useAnimate();
-  const wordsArray = words.split(" ");
+  // Memoize the split array so it doesn't recalc on every render.
+  const wordsArray = useMemo(() => words.split(" "), [words]);
+
   useEffect(() => {
     animate(
       "span",
@@ -24,39 +26,27 @@ export const TextGenerateEffect = ({
         filter: filter ? "blur(0px)" : "none",
       },
       {
-        duration: duration ? duration : 1,
+        duration: duration || 1,
         delay: stagger(0.2),
       }
     );
-  }, [scope.current, animate, duration, filter]);
-
-  const renderWords = () => {
-    return (
-      <motion.div ref={scope}>
-        {wordsArray.map((word, idx) => {
-          return (
-            <motion.span
-              key={word + idx}
-              className="dark:text-white text-black opacity-0"
-              style={{
-                filter: filter ? "blur(10px)" : "none",
-              }}
-            >
-              {word}{" "}
-            </motion.span>
-          );
-        })}
-      </motion.div>
-    );
-  };
+  }, [animate, duration, filter]);
 
   return (
     <div className={cn("font-bold", className)}>
       <div className="mt-4">
-        <div className=" dark:text-white text-black leading-snug tracking-wide">
-          {renderWords()}
-        </div>
+        <motion.div ref={scope} className="dark:text-white text-black leading-snug tracking-wide">
+          {wordsArray.map((word, idx) => (
+            <motion.span
+              key={`${word}-${idx}`}
+              className="opacity-0"
+              style={{ filter: filter ? "blur(10px)" : "none" }}
+            >
+              {word}{" "}
+            </motion.span>
+          ))}
+        </motion.div>
       </div>
     </div>
   );
-};
+});

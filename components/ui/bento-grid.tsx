@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { BackgroundGradientAnimation } from "./background-gradient-animation";
-import { useState } from "react";
+import React, { useMemo, useState } from "react";
 import animationData from "@/data/confetti.json";
 import MagicButton from "../MagicButton";
 import { IoCopyOutline } from "react-icons/io5";
@@ -12,7 +12,15 @@ import Image from "next/image";
 
 const Lottie = dynamic(() => import("react-lottie"), { ssr: false });
 
-export const BentoGrid = ({
+const LEFT_LISTS = ["ReactJS", "Next.js", "AWS"];
+const RIGHT_LISTS = ["Java", "SQL", "Python"];
+
+const backgroundStyle = {
+  background: "rgb(4,7,29)",
+  backgroundColor: "linear-gradient(90deg, rgba(4,7,29,1) 0%, rgba(12,14,35,1) 100%)",
+};
+
+export const BentoGrid = React.memo(({
   className,
   children,
 }: {
@@ -29,9 +37,9 @@ export const BentoGrid = ({
       {children}
     </div>
   );
-};
+});
 
-export const BentoGridItem = ({
+export const BentoGridItem = React.memo(({
   className,
   title,
   description,
@@ -52,17 +60,14 @@ export const BentoGridItem = ({
 }) => {
   const [copied, setCopied] = useState(false);
 
-  const defaultOptions = {
+  const defaultOptions = useMemo(() => ({
     loop: copied,
     autoplay: copied,
     animationData: animationData,
     rendererSettings: {
       preserveAspectRatio: "xMidYMid slice",
     },
-  };
-
-  const leftLists = ["ReactJS", "Next.js", "AWS"];
-  const rightLists = ["Java", "SQL", "Python"];
+  }), [copied]);
 
   const handleCopy = () => {
     navigator.clipboard.writeText("danmcgrath1035@gmail.com");
@@ -75,11 +80,7 @@ export const BentoGridItem = ({
         "row-span-1 relative overflow-hidden rounded-3xl border border-white/[0.1] group/bento hover:shadow-xl transition duration-200 shadow-input dark:shadow-none justify-between flex flex-col space-y-4",
         className
       )}
-      style={{
-        background: "rgb(4,7,29)",
-        backgroundColor:
-          "linear-gradient(90deg, rgba(4,7,29,1) 0%, rgba(12,14,35,1) 100%)",
-      }}
+      style={backgroundStyle}
     >
       {/* add img divs */}
       <div className={`${id === 6 && "flex justify-center"} h-full`}>
@@ -138,7 +139,7 @@ export const BentoGridItem = ({
             <div className="flex gap-1 lg:gap-5 w-fit absolute -right-3 lg:-right-2">
               {/* tech stack lists */}
               <div className="flex flex-col gap-3 md:gap-3 lg:gap-8">
-                {leftLists.map((item, i) => (
+                {LEFT_LISTS.map((item, i) => (
                   <span
                     key={i}
                     className="lg:py-4 lg:px-3 py-2 px-3 text-xs lg:text-base opacity-50 
@@ -151,7 +152,7 @@ export const BentoGridItem = ({
               </div>
               <div className="flex flex-col gap-3 md:gap-3 lg:gap-8">
                 <span className="lg:py-4 lg:px-3 py-4 px-3  rounded-lg text-center bg-[#10132E]"></span>
-                {rightLists.map((item, i) => (
+                {RIGHT_LISTS.map((item, i) => (
                   <span
                     key={i}
                     className="lg:py-4 lg:px-3 py-2 px-3 text-xs lg:text-base opacity-50 
@@ -185,4 +186,4 @@ export const BentoGridItem = ({
       </div>
     </div>
   );
-};
+});
