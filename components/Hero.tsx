@@ -4,7 +4,7 @@ import MagicButton from './MagicButton';
 import { FaLocationArrow } from 'react-icons/fa';
 import { Boxes } from './ui/background-boxes';
 
-const Hero = React.memo(() => {
+const HeroComponent = () => {
   return (
     <div className="h-full w-full pt-36 pb-64 relative overflow-hidden bg-black-100 flex flex-col items-center justify-center rounded-lg">
       <div className="absolute inset-0 w-full h-full bg-slate-950 z-20 [mask-image:radial-gradient(transparent,white)] pointer-events-none" />
@@ -33,6 +33,8 @@ const Hero = React.memo(() => {
       </div>
     </div>
   );
-});
+};
 
-export default Hero;
+HeroComponent.displayName = 'Hero';
+
+export const Hero = React.memo(HeroComponent);

@@ -3,7 +3,7 @@ import React, { useEffect, useMemo } from "react";
 import { motion, stagger, useAnimate } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-export const TextGenerateEffect = React.memo(({
+const TextGenerateEffectComponent = ({
   words,
   className,
   filter = true,
@@ -49,4 +49,10 @@ export const TextGenerateEffect = React.memo(({
       </div>
     </div>
   );
-});
+};
+
+// Set a display name for debugging purposes
+TextGenerateEffectComponent.displayName = "TextGenerateEffect";
+
+// Wrap the component in React.memo
+export const TextGenerateEffect = React.memo(TextGenerateEffectComponent);
