@@ -21,7 +21,7 @@ Welcome to the repository for my personal portfolio website, showcasing my proje
 
 - **Framework**: [Next.js](https://nextjs.org/)
 - **Styling**: [Tailwind CSS](https://tailwindcss.com/)
-- **UI Component Library**: [Shadcn](https://ui.shadcn.com/)
+- **UI Component Library**: [Acternity UI](https://ui.aceternity.com/)
 - **Monitoring**: [Sentry](https://sentry.io/welcome/)
 - **Animations**: Implemented using CSS and JavaScript for interactive elements.
 
