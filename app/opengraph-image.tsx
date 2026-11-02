@@ -15,12 +15,12 @@ export default function OpengraphImage() {
           flexDirection: "column",
           justifyContent: "center",
           padding: 96,
-          background: "#000319",
+          background: "#0B3A30",
           color: "#ffffff",
         }}
       >
         <div style={{ fontSize: 88, fontWeight: 700 }}>Daniel McGrath</div>
-        <div style={{ fontSize: 44, marginTop: 24, color: "#cbacf9" }}>
+        <div style={{ fontSize: 44, marginTop: 24, color: "#E2AE4A" }}>
           Software engineer based in Boston, MA
         </div>
       </div>

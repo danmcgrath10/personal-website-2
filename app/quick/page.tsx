@@ -9,12 +9,12 @@ export const metadata: Metadata = {
 };
 
 const sectionHeading = "text-xl font-semibold mt-10 mb-3";
-const link = "underline text-purple";
+const link = "underline text-spruce";
 
 export default function Quick() {
   return (
-    <main className="mx-auto max-w-2xl px-4 py-10 bg-black-100 text-white-200 min-h-screen">
-      <h1 className="text-3xl font-bold text-white">{site.name}</h1>
+    <main className="mx-auto max-w-2xl px-4 py-10 min-h-screen">
+      <h1 className="text-3xl font-bold">{site.name}</h1>
       <p className="mt-1">{site.headline}</p>
       <p className="mt-4">{site.summary}</p>
       <p className="mt-4 flex flex-wrap gap-4">
@@ -28,7 +28,7 @@ export default function Quick() {
       <ul className="space-y-5">
         {site.experience.map((job) => (
           <li key={`${job.company}-${job.dates}`}>
-            <h3 className="font-semibold text-white">{job.title}, {job.company}</h3>
+            <h3 className="font-semibold">{job.title}, {job.company}</h3>
             <p className="text-sm">{job.dates}{job.location && ` · ${job.location}`}</p>
             <p className="mt-1">{job.summary}</p>
           </li>
@@ -39,7 +39,7 @@ export default function Quick() {
       <ul className="space-y-5">
         {site.projects.map((project) => (
           <li key={project.title}>
-            <h3 className="font-semibold text-white">
+            <h3 className="font-semibold">
               {project.url ? <a href={project.url} className={link}>{project.title}</a> : project.title}
             </h3>
             <p className="mt-1">{project.summary}</p>
@@ -50,6 +50,11 @@ export default function Quick() {
             )}
           </li>
         ))}
+      </ul>
+
+      <h2 className={sectionHeading}>Skills</h2>
+      <ul className="space-y-1">
+        {site.skills.map(({ area, items }) => <li key={area}>{area}: {items}</li>)}
       </ul>
 
       <h2 className={sectionHeading}>Education</h2>

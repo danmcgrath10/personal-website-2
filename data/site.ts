@@ -2,6 +2,9 @@
 export const site = {
   name: "Daniel McGrath",
   headline: "Software engineer based in Boston, MA",
+  pitch:
+    "Full-stack software engineer in Boston, building high-performance applications, data platforms, and internal tools.",
+  current: "Currently a Software Engineer II at Klaviyo.",
   summary:
     "I'm a full-stack and backend software engineer. I work mostly with Java and React, with hands-on experience in JavaFX, Next.js, Docker, and AWS.",
   experience: [
@@ -19,7 +22,7 @@ export const site = {
       dates: "Oct 2022 to Aug 2025",
       location: "Stafford, VA",
       summary:
-        "Built a segmented thread-pooling system that eliminated UI freezes, re-architected the messaging backend, and added 3D tracking of orbital objects and vessels.",
+        "Built a segmented thread-pooling system that eliminated UI freezes, re-architected the messaging backend to cut new protocol integration from weeks to hours, and added 3D tracking of orbital objects and vessels.",
     },
     {
       title: "Software Dev Engineer",
@@ -65,48 +68,75 @@ export const site = {
   projects: [
     {
       title: "FabCutie",
+      image: "/fabcutie-screenshot.png",
+      stack: "C++, AU, VST3, CLAP",
+      onHomePage: true,
       summary:
         "A free, open-source parametric EQ for macOS and Windows in AU, VST3, CLAP, and standalone formats, with up to 24 bands, dynamic and spectral processing, EQ Match, and auto-unmasking between instances.",
       url: "https://github.com/danmcgrath10/fabcutie",
     },
     {
       title: "Home LLM Server",
+      image: "",
+      stack: "Ollama, MCP, Python",
+      onHomePage: true,
       summary:
         "An always-on Mac Studio that runs local models through Ollama, with a small MCP server that lets Claude hand off drafting, search, and transcription to them.",
       url: "",
     },
     {
       title: "EarGoo",
+      image: "",
+      stack: "Next.js, Supabase, Web Audio API",
+      onHomePage: true,
       summary:
         "A web-based audio visualizer with real-time frequency analysis, built with Next.js and Supabase.",
       url: "https://github.com/danmcgrath10/audio-visualizer",
     },
     {
       title: "SubTrack",
+      image: "",
+      stack: "Node.js, Express, MongoDB",
+      onHomePage: true,
       summary:
         "A subscription tracking and management API with automated reminders, built with Node.js, Express, and MongoDB.",
       url: "https://github.com/danmcgrath10/subtrack",
     },
     {
       title: "Cyclora",
+      image: "",
+      stack: "React Native, Expo, TypeScript, SQLite",
+      onHomePage: true,
       summary:
         "A React Native cycling tracker with GPS rides, local storage, and AI ride summaries.",
       url: "https://github.com/danmcgrath10/cyclora",
     },
     {
       title: "Alcohol and Light Seeking Robot",
+      image: "",
+      stack: "C++",
+      onHomePage: false,
       summary:
         "A college project at Northeastern University, from Nov 2017 to Mar 2018: a robot programmed in C++ that could seek out a source of light or alcohol in a dark room by following gradients.",
       url: "",
     },
     {
       title: "Locorum",
+      image: "/devil-tech-locorum-shot.png",
+      stack: "Java, JavaFX, Gradle",
+      onHomePage: true,
       summary:
         "A JavaFX cross-platform desktop application at DeVil-Tech that provides situational awareness and geographic information system capabilities for emergency services.",
       url: "",
     },
   ],
   education: "BS in Computer Engineering, Northeastern University, 2017 to Dec 2021",
+  skills: [
+    { area: "Frontend", items: "React, Next.js, Angular, React Native, JavaFX" },
+    { area: "Backend", items: "Java, Python, Node.js, JavaScript, SQL, Express" },
+    { area: "Data", items: "Apache Spark, Hive, Vertica, MongoDB, Supabase" },
+    { area: "Infrastructure", items: "AWS, Docker, Datadog" },
+  ],
   courses: [
     "Web Development",
     "Machine Learning",
