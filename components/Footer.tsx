@@ -21,7 +21,7 @@ const Footer = () => {
                 Let&apos;s <span className='text-purple'> Get In Touch</span>
             </h1>
             <p className='text-white-200 md:mt-10 my-5 text-center'>
-                I am always open to new opportunities and collaborations.
+                The best way to reach me is by email.
             </p>
             <a href='mailto:danmcgrath1035@gmail.com'>
                 <MagicButton

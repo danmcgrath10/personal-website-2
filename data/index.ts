@@ -59,7 +59,7 @@ export const gridItems = [
   },
   {
     id: 6,
-    title: "Do you want to start a project together?",
+    title: "Want to get in touch?",
     description: "",
     className: "lg:col-span-2 md:col-span-3 md:row-span-1",
     imgClassName: "",
@@ -108,6 +108,13 @@ export const projects = [
     img: "",
     iconLists: ["/re.svg","/ts.svg"],
     link: "https://github.com/danmcgrath10/cyclora",
+  },
+  {
+    id: 6,
+    title: "Home LLM Server",
+    des: "An always-on Mac Studio that runs local models through Ollama, with a small MCP server that lets Claude hand off drafting, search, and transcription to them.",
+    img: "",
+    iconLists: [],
   },
 ];
 
