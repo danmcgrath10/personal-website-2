@@ -97,9 +97,12 @@ export default function GameClient() {
   const [gains, setGains] = useState([0, 0, 0]);
   const [dmSent, setDmSent] = useState(false);
   const [swirled, setSwirled] = useState(false);
+  const [checklistOpen, setChecklistOpen] = useState(true);
 
   useEffect(() => {
-    setTouch(window.matchMedia("(pointer: coarse)").matches);
+    const coarse = window.matchMedia("(pointer: coarse)").matches;
+    setTouch(coarse);
+    setChecklistOpen(!coarse);
     audio.current = createAudio();
     let cancelled = false;
     import("phaser")
@@ -205,7 +208,8 @@ export default function GameClient() {
   }
 
   const near = text.objects.find(({ id }) => id === nearId);
-  const otherJobsDone = text.objects.every(({ id }) => id === "door" || done.includes(id));
+  const jobs = text.objects.filter(({ task }) => task);
+  const otherJobsDone = jobs.every(({ id }) => id === "door" || done.includes(id));
 
   return (
     <main className="fixed inset-0 flex flex-col bg-[#1b1420] text-white">
@@ -236,14 +240,23 @@ export default function GameClient() {
             aria-label={text.checklistLabel}
             className="absolute left-2 top-2 rounded-lg bg-black/70 p-2 text-xs"
           >
-            <h2 className="mb-1 font-semibold">{text.checklistLabel}</h2>
-            <ul className="space-y-0.5">
-              {text.objects.map(({ id, task }) => (
-                <li key={id} className={done.includes(id) ? "text-[#ffe08a] line-through" : ""}>
-                  {task}
-                </li>
-              ))}
-            </ul>
+            <button
+              type="button"
+              className="font-semibold"
+              aria-expanded={checklistOpen}
+              onClick={() => setChecklistOpen(!checklistOpen)}
+            >
+              {text.checklistLabel}: {jobs.filter(({ id }) => done.includes(id)).length} / {jobs.length}
+            </button>
+            {checklistOpen && (
+              <ul className="mt-1 space-y-0.5">
+                {jobs.map(({ id, task }) => (
+                  <li key={id} className={done.includes(id) ? "text-[#ffe08a] line-through" : ""}>
+                    {task}
+                  </li>
+                ))}
+              </ul>
+            )}
           </section>
         )}
       </div>
@@ -269,6 +282,7 @@ export default function GameClient() {
             <h2 className="text-xl font-bold">{text.title}</h2>
             <p className="mt-2">{text.goal}</p>
             <p className="mt-2 text-sm text-white/80">{touch ? text.introTouch : text.introKeyboard}</p>
+            <p className="mt-1 text-sm text-white/80">{text.stairsHint}</p>
             <div className="mt-4 flex justify-center gap-2">
               <button ref={startButton} type="button" className={primary} onClick={() => setStarted(true)}>
                 {text.startLabel}
@@ -340,7 +354,7 @@ export default function GameClient() {
             <p className="mt-2 text-xs text-[#ffe08a]">{text.doorLocked}</p>
           )}
 
-          <div className="mt-3 flex flex-wrap items-center gap-2">
+          <div className="sticky -bottom-4 -mx-4 -mb-4 mt-3 flex flex-wrap items-center gap-2 bg-[#2b1d27] p-4">
             {open && open.action && !done.includes(open.id) && (
               <button
                 type="button"

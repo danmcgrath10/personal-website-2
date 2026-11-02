@@ -3,6 +3,7 @@ import { TextGenerateEffect } from './ui/text-generate-effect';
 import MagicButton from './MagicButton';
 import { FaLocationArrow } from 'react-icons/fa';
 import { Boxes } from './ui/background-boxes';
+import Link from 'next/link';
 
 const HeroComponent = () => {
   return (
@@ -29,6 +30,10 @@ const HeroComponent = () => {
               position="right"
             />
           </a>
+          <div className="flex gap-6 text-sm">
+            <Link href="/play" className="underline text-purple">Play the game</Link>
+            <Link href="/quick" className="underline text-purple">Quick version</Link>
+          </div>
         </div>
       </div>
     </div>

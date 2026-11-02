@@ -19,7 +19,20 @@ export type GameHandle = {
 };
 
 type Rect = { x: number; y: number; w: number; h: number };
-type RoomObject = { id: string; area: Rect; spot: { x: number; y: number } };
+type RoomObject = {
+  id: string;
+  area: Rect;
+  spot: { x: number; y: number };
+  flavor?: boolean;
+};
+type RoomName = "workshop" | "cellar";
+type Room = {
+  objects: RoomObject[];
+  solids: Rect[];
+  draw: (g: Graphics) => void;
+  spawn: { x: number; y: number };
+  exit: { area: Rect; to: RoomName; spawn: { x: number; y: number } };
+};
 type Direction = "down" | "up" | "side";
 
 const WIDTH = 336;
@@ -28,24 +41,10 @@ const SPEED = 90;
 const NEAR_DISTANCE = 26;
 const FLOOR = { x: 16, y: 48, w: 304, h: 224 };
 
-const OBJECTS: RoomObject[] = [
-  { id: "computer", area: { x: 24, y: 40, w: 72, h: 44 }, spot: { x: 60, y: 96 } },
-  { id: "mixer", area: { x: 232, y: 40, w: 80, h: 44 }, spot: { x: 272, y: 96 } },
-  { id: "mead", area: { x: 16, y: 130, w: 28, h: 84 }, spot: { x: 58, y: 172 } },
-  { id: "books", area: { x: 292, y: 130, w: 28, h: 84 }, spot: { x: 278, y: 172 } },
-  { id: "board", area: { x: 102, y: 6, w: 30, h: 34 }, spot: { x: 117, y: 58 } },
-  { id: "door", area: { x: 148, y: 262, w: 40, h: 26 }, spot: { x: 168, y: 254 } },
-];
-const SOLIDS: Rect[] = [
-  ...OBJECTS.filter(({ id }) => id !== "door" && id !== "board").map(({ area }) => area),
-  { x: 284, y: 240, w: 26, h: 22 }, // plant
-  { x: 20, y: 236, w: 22, h: 26 }, // brewing jug
-];
-
 const inRect = (x: number, y: number, r: Rect) =>
   x >= r.x && x <= r.x + r.w && y >= r.y && y <= r.y + r.h;
 
-function canStand(x: number, y: number) {
+function canStand(solids: Rect[], x: number, y: number) {
   const box = { left: x - 5, right: x + 5, top: y - 4, bottom: y + 4 };
   if (
     box.left < FLOOR.x ||
@@ -55,7 +54,7 @@ function canStand(x: number, y: number) {
   ) {
     return false;
   }
-  return !SOLIDS.some(
+  return !solids.some(
     (r) => box.right > r.x && box.left < r.x + r.w && box.bottom > r.y && box.top < r.y + r.h
   );
 }
@@ -278,6 +277,11 @@ function drawRoom(g: Graphics) {
   rect(0x57533e, 150, 254, 36, 12);
   rect(0x6e6a4f, 152, 256, 32, 8);
 
+  // Stairs down to the cellar.
+  rect(0x21161d, 203, 245, 32, 26);
+  for (let i = 0; i < 4; i++) rect(0x6a4229 - i * 0x0a0806, 205, 247 + i * 6, 28, 5);
+  rect(0x432a1a, 205, 247, 28, 1);
+
   // Plant.
   rect(0x000000, 286, 260, 24, 3);
   box(rect, 288, 245, 18, 16, 0x9a5b3d, 0xb97653, 0x7c4730);
@@ -295,6 +299,130 @@ function drawRoom(g: Graphics) {
   rect(0x8a5a3a, 30, 229, 4, 4);
 }
 
+function drawCellar(g: Graphics) {
+  const rect = makeRect(g);
+
+  // Stone floor and walls.
+  rect(0x4a4750, 0, 0, WIDTH, HEIGHT);
+  for (let row = 0; row < 15; row++) {
+    const y = 48 + row * 16;
+    for (let i = -1; i < 12; i++) {
+      const x = i * 32 + (row % 2 ? 16 : 0);
+      rect(row % 3 === (i + 3) % 3 ? 0x524f58 : 0x4a4750, x, y, 32, 16);
+      rect(0x3a3840, x, y, 1, 16);
+      rect(0x5c5962, x + 1, y + 1, 30, 1);
+    }
+    rect(0x3a3840, 0, y, WIDTH, 1);
+  }
+  rect(0x37333d, 0, 0, WIDTH, 40);
+  for (let row = 0; row < 5; row++) {
+    for (let i = -1; i < 22; i++) {
+      rect(0x423e49, i * 16 + (row % 2 ? 8 : 0), row * 8, 15, 7);
+    }
+  }
+  rect(0x24212a, 0, 40, WIDTH, 8);
+  rect(0x24212a, 0, 0, 16, HEIGHT);
+  rect(0x24212a, 320, 0, 16, HEIGHT);
+  rect(0x24212a, 0, 272, WIDTH, 16);
+
+  // Hanging bulb.
+  rect(0x24212a, 167, 0, 2, 22);
+  rect(0xf4d98a, 164, 22, 8, 8);
+  rect(0xfff0c2, 166, 24, 4, 4);
+
+  // Barrels of mead.
+  box(rect, 24, 62, 72, 21, 0x5b3a24, 0x7a5233, 0x432a1a);
+  [28, 62].forEach((x) => {
+    box(rect, x, 40, 30, 30, 0x8a5a3a, 0xa8734e, 0x6a4229);
+    rect(0x3a3840, x, 47, 30, 2);
+    rect(0x3a3840, x, 61, 30, 2);
+    rect(0x5b3a24, x + 12, 52, 6, 6);
+  });
+  rect(0xc9d4d6, 41, 66, 4, 6);
+  box(rect, 36, 74, 6, 6, 0xc77d2e, 0xe6a93c, 0xa86726);
+
+  // Mixing booth with a screen and monitors.
+  box(rect, 232, 62, 80, 21, 0x3a3d48, 0x54586a, 0x23262f);
+  box(rect, 254, 40, 36, 22, 0x23262f, 0x3a3d48, 0x1c1d24);
+  rect(0x1f2a44, 257, 43, 30, 16);
+  [4, 8, 12, 6, 10, 13, 7, 5, 11, 4].forEach((h, i) =>
+    rect(0x6fc3d9, 258 + i * 3, 51 - h / 2, 2, h)
+  );
+  [236, 296].forEach((x) => {
+    box(rect, x, 44, 12, 18, 0x23262f, 0x3a3d48, 0x1c1d24);
+    rect(0x6c6f7d, x + 3, 50, 6, 6);
+  });
+  rect(0x1c1d24, 256, 68, 34, 8);
+  for (let i = 0; i < 8; i++) rect(i % 2 ? 0xe6b34a : 0xd6f1f7, 258 + i * 4, 70, 2, 2);
+
+  // The old college robot on a workbench.
+  box(rect, 140, 170, 56, 14, 0x5b3a24, 0x7a5233, 0x432a1a);
+  box(rect, 156, 152, 24, 18, 0x8a8d9a, 0xa8abb8, 0x6c6f7d);
+  rect(0x23262f, 164, 146, 8, 6);
+  rect(0xe6b34a, 167, 140, 2, 6);
+  rect(0xff6a5c, 166, 138, 4, 3);
+  rect(0x23262f, 152, 164, 4, 6);
+  rect(0x23262f, 180, 164, 4, 6);
+  rect(0x23262f, 166, 162, 4, 4);
+
+  // Crates of empty bottles.
+  box(rect, 284, 236, 26, 24, 0x7a5233, 0x93623f, 0x5b3a24);
+  rect(0x5b3a24, 284, 247, 26, 2);
+  for (let i = 0; i < 4; i++) rect(0x9fd0d9, 287 + i * 6, 230, 3, 7);
+
+  // Stairs back up.
+  rect(0x21161d, 149, 257, 38, 31);
+  for (let i = 0; i < 5; i++) rect(0x7a5233 - i * 0x0a0806, 151, 259 + i * 6, 34, 5);
+}
+
+const WORKSHOP_OBJECTS: RoomObject[] = [
+  { id: "computer", area: { x: 24, y: 40, w: 72, h: 44 }, spot: { x: 60, y: 96 } },
+  { id: "mixer", area: { x: 232, y: 40, w: 80, h: 44 }, spot: { x: 272, y: 96 } },
+  { id: "mead", area: { x: 16, y: 130, w: 28, h: 84 }, spot: { x: 58, y: 172 } },
+  { id: "books", area: { x: 292, y: 130, w: 28, h: 84 }, spot: { x: 278, y: 172 } },
+  { id: "board", area: { x: 102, y: 6, w: 30, h: 34 }, spot: { x: 117, y: 58 } },
+  { id: "door", area: { x: 148, y: 262, w: 40, h: 26 }, spot: { x: 168, y: 254 } },
+  { id: "window", flavor: true, area: { x: 138, y: 4, w: 60, h: 32 }, spot: { x: 168, y: 58 } },
+  { id: "poster", flavor: true, area: { x: 206, y: 8, w: 22, h: 22 }, spot: { x: 217, y: 58 } },
+  { id: "plant", flavor: true, area: { x: 284, y: 218, w: 26, h: 44 }, spot: { x: 274, y: 250 } },
+  { id: "jug", flavor: true, area: { x: 20, y: 229, w: 24, h: 33 }, spot: { x: 54, y: 250 } },
+];
+
+const CELLAR_OBJECTS: RoomObject[] = [
+  { id: "barrel", area: { x: 24, y: 40, w: 72, h: 44 }, spot: { x: 60, y: 96 } },
+  { id: "booth", area: { x: 232, y: 40, w: 80, h: 44 }, spot: { x: 272, y: 96 } },
+  { id: "robot", area: { x: 140, y: 138, w: 56, h: 46 }, spot: { x: 168, y: 198 } },
+  { id: "crates", flavor: true, area: { x: 284, y: 230, w: 26, h: 30 }, spot: { x: 272, y: 250 } },
+];
+
+const ROOMS: Record<RoomName, Room> = {
+  workshop: {
+    objects: WORKSHOP_OBJECTS,
+    solids: [
+      ...WORKSHOP_OBJECTS.filter(
+        ({ id, flavor }) => !flavor && id !== "door" && id !== "board"
+      ).map(({ area }) => area),
+      { x: 284, y: 240, w: 26, h: 22 }, // plant
+      { x: 20, y: 236, w: 22, h: 26 }, // brewing jug
+    ],
+    draw: drawRoom,
+    spawn: { x: 168, y: 190 },
+    exit: { area: { x: 205, y: 250, w: 28, h: 22 }, to: "cellar", spawn: { x: 168, y: 240 } },
+  },
+  cellar: {
+    objects: CELLAR_OBJECTS,
+    solids: [
+      { x: 24, y: 40, w: 72, h: 44 },
+      { x: 232, y: 40, w: 80, h: 44 },
+      { x: 140, y: 152, w: 56, h: 32 },
+      { x: 284, y: 236, w: 26, h: 24 },
+    ],
+    draw: drawCellar,
+    spawn: { x: 168, y: 240 },
+    exit: { area: { x: 151, y: 256, w: 34, h: 16 }, to: "workshop", spawn: { x: 219, y: 236 } },
+  },
+};
+
 export function createGame(
   Phaser: PhaserModule,
   parent: HTMLElement,
@@ -303,8 +431,11 @@ export function createGame(
   let paused = true;
   let done = new Set<string>();
   let night = false;
+  let roomName: RoomName = "workshop";
+  let spawn = ROOMS.workshop.spawn;
   let interactNow = () => {};
   let swirlNow = () => {};
+  const celebrated = new Set<string>();
 
   const portrait = parent.clientWidth / Math.max(parent.clientHeight, 1) < 0.85;
   const viewWidth = portrait ? 220 : WIDTH;
@@ -313,17 +444,18 @@ export function createGame(
     private player!: PhaserNamespace.GameObjects.Image;
     private shadow!: PhaserNamespace.GameObjects.Ellipse;
     private highlight!: Graphics;
-    private meters!: Graphics;
-    private cursorBlink!: PhaserNamespace.GameObjects.Rectangle;
-    private screen!: Graphics;
-    private fallenBook!: Graphics;
-    private looseNote!: Graphics;
-    private openDoor!: Graphics;
-    private darkness!: PhaserNamespace.GameObjects.Rectangle;
+    private meters?: Graphics;
+    private cursorBlink?: PhaserNamespace.GameObjects.Rectangle;
+    private screen?: Graphics;
+    private fallenBook?: Graphics;
+    private looseNote?: Graphics;
+    private openDoor?: Graphics;
+    private darkness?: PhaserNamespace.GameObjects.Rectangle;
+    private robotEye?: PhaserNamespace.GameObjects.Rectangle;
+    private robotGlow = false;
     private bubbleTweens: PhaserNamespace.Tweens.Tween[] = [];
     private keys!: Record<string, PhaserNamespace.Input.Keyboard.Key>;
     private markers = new Map<string, Graphics>();
-    private celebrated = new Set<string>();
     private target: { x: number; y: number } | null = null;
     private pendingId: string | null = null;
     private nearId: string | null = null;
@@ -332,69 +464,74 @@ export function createGame(
     private stepTime = 0;
     private reduceMotion = false;
     private nightShown = false;
+    private leaving = false;
+
+    private get room() {
+      return ROOMS[roomName];
+    }
 
     create() {
       this.reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      drawRoom(this.add.graphics());
-      this.addGlow(32, 58, 30, 0xffc966);
-      this.addGlow(168, 36, 36, 0x7f9fd9);
-      this.addBubbles();
+      this.markers = new Map();
+      this.bubbleTweens = [];
+      this.target = null;
+      this.pendingId = null;
+      this.nearId = null;
+      this.leaving = false;
+      this.nightShown = false;
+      this.robotGlow = false;
+      this.meters = this.cursorBlink = this.screen = this.fallenBook = undefined;
+      this.looseNote = this.openDoor = this.darkness = this.robotEye = undefined;
+      callbacks.onNear(null);
 
-      this.meters = this.add.graphics();
-      this.screen = this.add.graphics();
-      this.cursorBlink = this.add.rectangle(66, 51, 3, 2, 0xd6f1f7);
+      this.room.draw(this.add.graphics());
+      if (roomName === "workshop") this.createWorkshop();
+      else this.createCellar();
       this.highlight = this.add.graphics();
-
-      this.fallenBook = this.add.graphics();
-      const bookRect = makeRect(this.fallenBook);
-      bookRect(0x21161d, 261, 219, 18, 11);
-      bookRect(0x4f7a9d, 262, 220, 16, 9);
-      bookRect(0xf1e3c6, 263, 228, 14, 1);
-      bookRect(0xe6b34a, 267, 223, 6, 2);
-
-      this.looseNote = this.add.graphics();
-      const noteRect = makeRect(this.looseNote);
-      noteRect(0x21161d, 116, 33, 11, 8);
-      noteRect(0xf1e3c6, 117, 34, 9, 6);
-
-      this.openDoor = this.add.graphics();
-      const doorRect = makeRect(this.openDoor);
-      doorRect(0xf4d98a, 152, 272, 32, 16);
-      doorRect(0x432a1a, 148, 272, 4, 16);
-      this.openDoor.setVisible(false);
 
       (["down", "up", "side"] as Direction[]).forEach((direction) => {
         for (let step = 0; step < 4; step++) {
-          const texture = this.textures.createCanvas(`player-${direction}-${step}`, 14, 22);
+          const key = `player-${direction}-${step}`;
+          if (this.textures.exists(key)) continue;
+          const texture = this.textures.createCanvas(key, 14, 22);
           drawCharacter(texture!.getContext(), direction, step);
           texture!.refresh();
         }
       });
-      this.shadow = this.add.ellipse(168, 193, 14, 6, 0x000000, 0.28);
-      this.player = this.add.image(168, 190, "player-down-0").setOrigin(0.5, 0.86);
+      this.shadow = this.add.ellipse(spawn.x, spawn.y + 3, 14, 6, 0x000000, 0.28);
+      this.player = this.add.image(spawn.x, spawn.y, "player-down-0").setOrigin(0.5, 0.86);
 
-      this.darkness = this.add
-        .rectangle(0, 0, WIDTH, HEIGHT, 0x0b0820, 0)
-        .setOrigin(0)
-        .setDepth(900);
+      this.room.objects
+        .filter(({ flavor }) => !flavor)
+        .forEach(({ id, area }) => {
+          const marker = this.add.graphics();
+          marker.fillStyle(0x21161d);
+          marker.fillTriangle(-6, -8, 6, -8, 0, 1);
+          marker.fillStyle(0xffe08a);
+          marker.fillTriangle(-5, -7, 5, -7, 0, 0);
+          marker.setPosition(area.x + area.w / 2, Math.max(area.y - 2, 14));
+          marker.setDepth(1000);
+          this.markers.set(id, marker);
+          if (!this.reduceMotion) {
+            this.tweens.add({ targets: marker, y: marker.y - 4, duration: 500, yoyo: true, repeat: -1 });
+          }
+        });
 
-      OBJECTS.forEach(({ id, area }) => {
-        const marker = this.add.graphics();
-        marker.fillStyle(0x21161d);
-        marker.fillTriangle(-6, -8, 6, -8, 0, 1);
-        marker.fillStyle(0xffe08a);
-        marker.fillTriangle(-5, -7, 5, -7, 0, 0);
-        marker.setPosition(area.x + area.w / 2, Math.max(area.y - 2, 14));
-        marker.setDepth(1000);
-        this.markers.set(id, marker);
-        if (!this.reduceMotion) {
-          this.tweens.add({ targets: marker, y: marker.y - 4, duration: 500, yoyo: true, repeat: -1 });
-        }
-      });
+      const { exit } = this.room;
+      const exitMarker = this.add.graphics();
+      exitMarker.fillStyle(0x21161d);
+      exitMarker.fillTriangle(-6, -8, 6, -8, 0, 1);
+      exitMarker.fillStyle(0x9fd0d9);
+      exitMarker.fillTriangle(-5, -7, 5, -7, 0, 0);
+      exitMarker.setPosition(exit.area.x + exit.area.w / 2, exit.area.y - 2).setDepth(1000);
+      if (!this.reduceMotion) {
+        this.tweens.add({ targets: exitMarker, y: exitMarker.y - 4, duration: 500, yoyo: true, repeat: -1 });
+      }
 
       const camera = this.cameras.main;
       camera.setBounds(0, 0, WIDTH, HEIGHT);
       if (portrait) camera.startFollow(this.player, true, 0.12, 0.12);
+      if (!this.reduceMotion) camera.fadeIn(250);
 
       const keyboard = this.input.keyboard!;
       const codes = Phaser.Input.Keyboard.KeyCodes;
@@ -426,11 +563,49 @@ export function createGame(
 
       this.input.on("pointerdown", (pointer: PhaserNamespace.Input.Pointer) => {
         if (paused) return;
-        const object = OBJECTS.find(({ area }) => inRect(pointer.worldX, pointer.worldY, area));
+        const object = this.room.objects.find(({ area }) => inRect(pointer.worldX, pointer.worldY, area));
         this.pendingId = object?.id ?? null;
         this.target = object ? { ...object.spot } : { x: pointer.worldX, y: pointer.worldY };
         this.ping(pointer.worldX, pointer.worldY);
       });
+    }
+
+    private createWorkshop() {
+      this.addGlow(32, 58, 30, 0xffc966);
+      this.addGlow(168, 36, 36, 0x7f9fd9);
+      this.addBubbles();
+
+      this.meters = this.add.graphics();
+      this.screen = this.add.graphics();
+      this.cursorBlink = this.add.rectangle(66, 51, 3, 2, 0xd6f1f7);
+
+      this.fallenBook = this.add.graphics();
+      const bookRect = makeRect(this.fallenBook);
+      bookRect(0x21161d, 261, 219, 18, 11);
+      bookRect(0x4f7a9d, 262, 220, 16, 9);
+      bookRect(0xf1e3c6, 263, 228, 14, 1);
+      bookRect(0xe6b34a, 267, 223, 6, 2);
+
+      this.looseNote = this.add.graphics();
+      const noteRect = makeRect(this.looseNote);
+      noteRect(0x21161d, 116, 33, 11, 8);
+      noteRect(0xf1e3c6, 117, 34, 9, 6);
+
+      this.openDoor = this.add.graphics();
+      const doorRect = makeRect(this.openDoor);
+      doorRect(0xf4d98a, 152, 272, 32, 16);
+      doorRect(0x432a1a, 148, 272, 4, 16);
+      this.openDoor.setVisible(false);
+
+      this.darkness = this.add
+        .rectangle(0, 0, WIDTH, HEIGHT, 0x0b0820, 0)
+        .setOrigin(0)
+        .setDepth(900);
+    }
+
+    private createCellar() {
+      this.addGlow(168, 30, 80, 0xffc966);
+      this.robotEye = this.add.rectangle(168, 158, 8, 2, 0x4a4d5a);
     }
 
     private addGlow(x: number, y: number, radius: number, color: number) {
@@ -509,24 +684,26 @@ export function createGame(
     }
 
     private drawLiveDetails(time: number) {
-      this.meters.clear();
-      const live = done.has("mixer") && !this.reduceMotion;
-      for (let i = 0; i < 6; i++) {
-        const level = live ? 3 + Math.abs(Math.sin(time / (170 + i * 37))) * 7 : 3 + (i % 3);
-        this.meters.fillStyle(i % 2 ? 0xe6b34a : 0x6fc3d9);
-        this.meters.fillRect(255 + i * 6, 76 - level, 4, 2);
+      if (this.meters) {
+        this.meters.clear();
+        const live = done.has("mixer") && !this.reduceMotion;
+        for (let i = 0; i < 6; i++) {
+          const level = live ? 3 + Math.abs(Math.sin(time / (170 + i * 37))) * 7 : 3 + (i % 3);
+          this.meters.fillStyle(i % 2 ? 0xe6b34a : 0x6fc3d9);
+          this.meters.fillRect(255 + i * 6, 76 - level, 4, 2);
+        }
       }
-
-      this.screen.clear();
-      const computerDone = done.has("computer");
-      if (computerDone) {
-        this.screen.fillStyle(0x7fd98a);
-        this.screen.fillRect(50, 54, 10, 2);
+      if (this.screen) {
+        this.screen.clear();
+        if (done.has("computer")) {
+          this.screen.fillStyle(0x7fd98a);
+          this.screen.fillRect(50, 54, 10, 2);
+        }
       }
-      this.cursorBlink.setVisible(this.reduceMotion || Math.floor(time / 500) % 2 === 0);
+      this.cursorBlink?.setVisible(this.reduceMotion || Math.floor(time / 500) % 2 === 0);
 
       this.highlight.clear();
-      const near = OBJECTS.find(({ id }) => id === this.nearId);
+      const near = this.room.objects.find(({ id }) => id === this.nearId);
       if (near && !paused) {
         const { x, y, w, h } = near.area;
         const alpha = this.reduceMotion ? 0.9 : 0.55 + Math.sin(time / 180) * 0.35;
@@ -534,21 +711,46 @@ export function createGame(
         this.highlight.strokeRect(x - 1, y - 1, w + 2, h + 2);
       }
 
-      this.fallenBook.setVisible(!done.has("books"));
-      this.looseNote.setVisible(!done.has("board"));
-      if (night && !this.nightShown) {
+      this.fallenBook?.setVisible(!done.has("books"));
+      this.looseNote?.setVisible(!done.has("board"));
+      if (this.robotEye && done.has("robot")) {
+        this.robotEye.setFillStyle(0xff6a5c);
+        if (!this.robotGlow && !this.reduceMotion) {
+          this.robotGlow = true;
+          this.tweens.add({ targets: this.robotEye, alpha: 0.4, duration: 300, yoyo: true, repeat: -1 });
+        }
+      }
+      if (night && !this.nightShown && this.darkness) {
         this.nightShown = true;
-        this.openDoor.setVisible(true);
+        this.openDoor?.setVisible(true);
+        const darkness = this.darkness;
         if (this.reduceMotion) {
-          this.darkness.setFillStyle(0x0b0820, 0.55);
+          darkness.setFillStyle(0x0b0820, 0.55);
         } else {
           this.tweens.addCounter({
             from: 0,
             to: 0.55,
             duration: 1200,
-            onUpdate: (tween) => this.darkness.setFillStyle(0x0b0820, tween.getValue() ?? 0),
+            onUpdate: (tween) => darkness.setFillStyle(0x0b0820, tween.getValue() ?? 0),
           });
         }
+      }
+    }
+
+    private changeRoom() {
+      if (this.leaving) return;
+      this.leaving = true;
+      const { to, spawn: next } = this.room.exit;
+      const go = () => {
+        roomName = to;
+        spawn = next;
+        this.scene.restart();
+      };
+      if (this.reduceMotion) {
+        go();
+      } else {
+        this.cameras.main.fadeOut(200);
+        this.cameras.main.once("camerafadeoutcomplete", go);
       }
     }
 
@@ -556,13 +758,13 @@ export function createGame(
       this.drawLiveDetails(time);
       this.markers.forEach((marker, id) => {
         marker.setVisible(!done.has(id));
-        if (done.has(id) && !this.celebrated.has(id)) {
-          this.celebrated.add(id);
-          const { area } = OBJECTS.find((object) => object.id === id)!;
+        if (done.has(id) && !celebrated.has(id)) {
+          celebrated.add(id);
+          const { area } = this.room.objects.find((object) => object.id === id)!;
           this.burst(area.x + area.w / 2, area.y + area.h / 2);
         }
       });
-      if (paused) return;
+      if (paused || this.leaving) return;
 
       const step = (SPEED * delta) / 1000;
       const { up, down, left, right, w, a, s, d } = this.keys;
@@ -588,8 +790,8 @@ export function createGame(
         const length = Math.hypot(dx, dy);
         const nextX = this.player.x + (dx / length) * step;
         const nextY = this.player.y + (dy / length) * step;
-        if (canStand(nextX, this.player.y)) this.player.x = nextX;
-        if (canStand(this.player.x, nextY)) this.player.y = nextY;
+        if (canStand(this.room.solids, nextX, this.player.y)) this.player.x = nextX;
+        if (canStand(this.room.solids, this.player.x, nextY)) this.player.y = nextY;
         if (this.target && before.x === this.player.x && before.y === this.player.y) {
           this.target = null;
         }
@@ -620,8 +822,13 @@ export function createGame(
       this.player.setDepth(this.player.y);
       this.shadow.setDepth(this.player.y - 1);
 
+      if (moving && inRect(this.player.x, this.player.y, this.room.exit.area)) {
+        this.changeRoom();
+        return;
+      }
+
       const near =
-        OBJECTS.find(
+        this.room.objects.find(
           ({ spot }) =>
             Math.hypot(spot.x - this.player.x, spot.y - this.player.y) < NEAR_DISTANCE
         )?.id ?? null;
