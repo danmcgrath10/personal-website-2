@@ -5,6 +5,19 @@ export const site = {
   pitch:
     "Full-stack software engineer in Boston, building high-performance applications, data platforms, and internal tools.",
   current: "Currently a Software Engineer II at Klaviyo.",
+  ticker: [
+    "Software Engineer II at Klaviyo",
+    "FabCutie is free and open source",
+    "I mix and master hip hop",
+    "Favorite batch: spiced apple-pie metheglin",
+    "Try the workshop game",
+  ],
+  badges: [
+    { label: "Built with Next.js", url: "https://nextjs.org" },
+    { label: "Play the game", url: "/play" },
+    { label: "Quick version", url: "/quick" },
+    { label: "FabCutie EQ", url: "https://github.com/danmcgrath10/fabcutie" },
+  ],
   summary:
     "I'm a full-stack and backend software engineer. I work mostly with Java and React, with hands-on experience in JavaFX, Next.js, Docker, and AWS.",
   experience: [

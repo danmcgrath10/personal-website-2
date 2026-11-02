@@ -1,12 +1,18 @@
 import type { Metadata } from "next";
-import { Archivo } from "next/font/google";
+import { Michroma, Silkscreen } from "next/font/google";
 import "./globals.css";
 import { SpeedInsights } from '@vercel/speed-insights/next';
 
-const archivo = Archivo({
-  variable: "--font-archivo",
+const michroma = Michroma({
+  variable: "--font-michroma",
   subsets: ["latin"],
-  axes: ["wdth"],
+  weight: "400",
+});
+
+const silkscreen = Silkscreen({
+  variable: "--font-silkscreen",
+  subsets: ["latin"],
+  weight: "400",
 });
 
 export const metadata: Metadata = {
@@ -29,7 +35,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={archivo.variable}>
+    <html lang="en" className={`${michroma.variable} ${silkscreen.variable}`}>
       <head>
         <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />

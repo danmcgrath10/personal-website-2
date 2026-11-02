@@ -120,11 +120,11 @@ export default function EqCurve() {
           </text>
         </g>
       ))}
-      <path d={`${line} L ${viewWidth} ${HEIGHT} L 0 ${HEIGHT} Z`} fill="#e2ae4a" fillOpacity="0.1" />
+      <path d={`${line} L ${viewWidth} ${HEIGHT} L 0 ${HEIGHT} Z`} fill="#39e6ff" fillOpacity="0.1" />
       <path
         d={line}
         fill="none"
-        stroke="#e2ae4a"
+        stroke="#39e6ff"
         strokeWidth="3.5"
         strokeLinejoin="round"
         pathLength={settled ? undefined : 1}
@@ -154,8 +154,8 @@ export default function EqCurve() {
             cx={toView(band.x)}
             cy={CENTER - band.gain}
             r={(dragging === index ? 12 : 9) * (narrow ? 1.3 : 1)}
-            fill="#0b3a30"
-            stroke="#e2ae4a"
+            fill="#050a2b"
+            stroke="#39e6ff"
             strokeWidth="3.5"
             pointerEvents="none"
           />

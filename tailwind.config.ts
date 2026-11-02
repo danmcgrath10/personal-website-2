@@ -5,16 +5,16 @@ const config = {
   theme: {
     extend: {
       colors: {
-        paper: "#F3F5F2",
-        ink: "#16211D",
-        muted: "#55645E",
-        rule: "#D3DAD4",
-        spruce: "#0F4C3F",
-        "spruce-deep": "#0B3A30",
-        mead: "#E2AE4A",
+        paper: "#F0F4FF",
+        ink: "#0B1A55",
+        muted: "#35427A",
+        rule: "#B5C3EA",
+        link: "#1846C7",
       },
       fontFamily: {
-        sans: ["var(--font-archivo)", "system-ui", "sans-serif"],
+        sans: ["Verdana", "Tahoma", "Geneva", "sans-serif"],
+        chrome: ["var(--font-michroma)", "Verdana", "sans-serif"],
+        pixel: ["var(--font-silkscreen)", "monospace"],
       },
     },
   },

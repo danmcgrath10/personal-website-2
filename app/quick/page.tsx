@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 };
 
 const sectionHeading = "text-xl font-semibold mt-10 mb-3";
-const link = "underline text-spruce";
+const link = "underline text-link";
 
 export default function Quick() {
   return (
