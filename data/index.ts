@@ -133,7 +133,7 @@ export const workExperience = [
   },
   {
     id: 4,
-    title: "Part-time Sofware Development Intern",
+    title: "Part-time Software Development Intern",
     desc: "Contributed to a team developing a gamified ad experience browser extension using Angular and ASP.NET, focusing on optimizing project timelines and enhancing user engagement. Ensured alignment with company technology standards.",
     className: "md:col-span-2",
     thumbnail: "/exp4.svg",

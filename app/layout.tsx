@@ -15,8 +15,17 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Daniel McGrath",
-  description: "Welcome to my portfolio!",
+  metadataBase: new URL("https://www.dannymportfolio.com"),
+  title: "Daniel McGrath | Software Engineer in Boston, MA",
+  description: "Daniel McGrath is a software engineer based in Boston, MA. See projects and work experience at MEDITECH, WHOOP, Criteo, and DEVIL-TECH.",
+  alternates: { canonical: "/" },
+  openGraph: {
+    title: "Daniel McGrath | Software Engineer in Boston, MA",
+    description: "Projects and work experience from Daniel McGrath, a software engineer based in Boston, MA.",
+    url: "/",
+    siteName: "Daniel McGrath",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
