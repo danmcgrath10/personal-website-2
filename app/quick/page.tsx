@@ -43,12 +43,18 @@ export default function Quick() {
               {project.url ? <a href={project.url} className={link}>{project.title}</a> : project.title}
             </h3>
             <p className="mt-1">{project.summary}</p>
+            {project.title === "FabCutie" && (
+              <ul className="mt-2 list-disc pl-5 text-sm">
+                {site.fabCutieFeatures.map((feature) => <li key={feature}>{feature}</li>)}
+              </ul>
+            )}
           </li>
         ))}
       </ul>
 
       <h2 className={sectionHeading}>Education</h2>
       <p>{site.education}</p>
+      <p className="mt-2">Coursework: {site.courses.join(", ")}.</p>
 
       <h2 className={sectionHeading}>Interests</h2>
       <p>{site.interests}</p>

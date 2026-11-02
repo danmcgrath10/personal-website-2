@@ -10,6 +10,57 @@ const { game: text } = site;
 const button = "rounded-lg border border-white/30 px-3 py-2 text-sm text-white bg-black/40";
 const primary = "rounded-lg border border-[#e6b34a] px-3 py-2 text-sm text-white bg-[#7c3f3a] disabled:opacity-50";
 
+function ObjectList({ kind }: { kind: string }) {
+  const item = "text-xs leading-snug";
+  if (kind === "experience") {
+    return (
+      <section className="mt-3">
+        <h3 className="mb-1 text-xs font-semibold text-[#ffe08a]">{text.historyLabel}</h3>
+        <ul className="space-y-1">
+          {site.experience.map((job) => (
+            <li key={`${job.company}-${job.dates}`} className={item}>
+              <strong>{job.title}, {job.company}</strong> ({job.dates}): {job.summary}
+            </li>
+          ))}
+        </ul>
+      </section>
+    );
+  }
+  if (kind === "projects") {
+    return (
+      <section className="mt-3">
+        <h3 className="mb-1 text-xs font-semibold text-[#ffe08a]">{text.projectsLabel}</h3>
+        <ul className="space-y-1">
+          {site.projects.map((project) => (
+            <li key={project.title} className={item}>
+              <strong>
+                {project.url ? (
+                  <a href={project.url} className="underline" target="_blank" rel="noreferrer">{project.title}</a>
+                ) : project.title}
+              </strong>: {project.summary}
+            </li>
+          ))}
+        </ul>
+      </section>
+    );
+  }
+  const simple =
+    kind === "features"
+      ? { label: text.featuresLabel, items: site.fabCutieFeatures }
+      : kind === "courses"
+        ? { label: text.coursesLabel, items: site.courses }
+        : null;
+  if (!simple) return null;
+  return (
+    <section className="mt-3">
+      <h3 className="mb-1 text-xs font-semibold text-[#ffe08a]">{simple.label}</h3>
+      <ul className="list-disc space-y-0.5 pl-4">
+        {simple.items.map((entry) => <li key={entry} className={item}>{entry}</li>)}
+      </ul>
+    </section>
+  );
+}
+
 function EqCurve({ gains }: { gains: number[] }) {
   const points = [
     [0, 30 - gains[0] * 2],
@@ -78,7 +129,7 @@ export default function GameClient() {
 
   useEffect(() => {
     handle.current?.setPaused(!playing);
-    if (dialogOpen) closeButton.current?.focus();
+    if (dialogOpen) closeButton.current?.focus({ preventScroll: true });
     else if (!started && status === "ready") startButton.current?.focus();
   }, [playing, dialogOpen, started, status]);
 
@@ -233,7 +284,7 @@ export default function GameClient() {
           role="dialog"
           aria-modal="true"
           aria-label={open?.name ?? text.finishedTitle}
-          className="absolute inset-x-3 bottom-3 mx-auto max-w-xl rounded-xl border-2 border-[#e6b34a] bg-[#2b1d27] p-4"
+          className="absolute inset-x-3 bottom-3 mx-auto max-h-[75vh] max-w-xl overflow-y-auto rounded-xl border-2 border-[#e6b34a] bg-[#2b1d27] p-4"
         >
           <h2 className="font-semibold first-letter:uppercase">{open?.name ?? text.finishedTitle}</h2>
           <p className="mt-2 text-sm leading-relaxed">
@@ -282,6 +333,8 @@ export default function GameClient() {
               <span className="inline-block animate-bounce [animation-delay:300ms]">o</span>
             </p>
           )}
+
+          {open && <ObjectList kind={open.list} />}
 
           {openId === "door" && !otherJobsDone && (
             <p className="mt-2 text-xs text-[#ffe08a]">{text.doorLocked}</p>

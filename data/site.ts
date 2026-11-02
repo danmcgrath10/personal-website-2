@@ -101,6 +101,24 @@ export const site = {
     },
   ],
   education: "BS in Computer Engineering, Northeastern University, 2017 to Dec 2021",
+  courses: [
+    "Web Development",
+    "Machine Learning",
+    "Computer Vision",
+    "Object-Oriented Design",
+    "Digital Logic Design",
+    "Fundamentals of Engineering Algorithms",
+    "Fundamentals of Networks",
+  ],
+  fabCutieFeatures: [
+    "Up to 24 bands, with cuts from 6 to 96 dB/oct plus brickwall",
+    "Dynamic EQ and spectral dynamics that can tame a single resonance",
+    "EQ Sketch: draw a curve and get the bands that make it",
+    "EQ Match: move a track's tonal balance toward a reference",
+    "Resonance finder and auto-unmasking between tracks",
+    "Zero Latency, Natural Phase, and Linear Phase modes",
+    "Mono, stereo, and surround up to 9.1.6",
+  ],
   interests: "Music production and mead brewing",
   links: [
     { label: "GitHub", url: "https://github.com/danmcgrath10" },
@@ -127,6 +145,10 @@ export const site = {
     doorLocked: "Finish the other jobs first, or use the links now.",
     dm: { from: "Instagram DM", to: "Platform", message: "New message" },
     eq: { bands: ["Low", "Mid", "High"], play: "Play the loop", stop: "Stop the loop" },
+    historyLabel: "Where I've worked",
+    projectsLabel: "What I've built",
+    featuresLabel: "What FabCutie can do",
+    coursesLabel: "Classes I took",
     objects: [
       {
         id: "computer",
@@ -134,6 +156,7 @@ export const site = {
         task: "Test the DM connection",
         action: "Send a test DM",
         line: "By day I'm a Software Engineer II at Klaviyo, doing full-stack work on its social channel and connecting Instagram DMs to the platform.",
+        list: "experience",
         links: [],
       },
       {
@@ -142,6 +165,7 @@ export const site = {
         task: "Tune the mix",
         action: "",
         line: "I built FabCutie, a free, open-source parametric EQ for macOS and Windows. These sliders are a tiny taste of what an EQ does, so try them on this loop.",
+        list: "features",
         links: [{ label: "FabCutie on GitHub", url: "https://github.com/danmcgrath10/fabcutie" }],
       },
       {
@@ -150,6 +174,7 @@ export const site = {
         task: "Check on the mead",
         action: "Swirl the jug",
         line: "Outside of work, I'm into music production and mead brewing. This jug could use a swirl.",
+        list: "",
         links: [],
       },
       {
@@ -158,6 +183,16 @@ export const site = {
         task: "Put the textbook away",
         action: "Shelve the book",
         line: "One of my old textbooks fell on the floor. I earned my BS in Computer Engineering at Northeastern University, finishing in December 2021.",
+        list: "courses",
+        links: [],
+      },
+      {
+        id: "board",
+        name: "project board",
+        task: "Straighten the project board",
+        action: "Straighten it",
+        line: "This board is where I keep track of what I've been building. One of the notes has come loose.",
+        list: "projects",
         links: [],
       },
       {
@@ -166,6 +201,7 @@ export const site = {
         task: "Head out for the night",
         action: "Turn out the lights",
         line: "You can find me on GitHub and LinkedIn, or send me an email.",
+        list: "",
         links: [
           { label: "GitHub", url: "https://github.com/danmcgrath10" },
           { label: "LinkedIn", url: "https://www.linkedin.com/in/mcgrath-daniel-e/" },

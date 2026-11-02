@@ -33,10 +33,11 @@ const OBJECTS: RoomObject[] = [
   { id: "mixer", area: { x: 232, y: 40, w: 80, h: 44 }, spot: { x: 272, y: 96 } },
   { id: "mead", area: { x: 16, y: 130, w: 28, h: 84 }, spot: { x: 58, y: 172 } },
   { id: "books", area: { x: 292, y: 130, w: 28, h: 84 }, spot: { x: 278, y: 172 } },
+  { id: "board", area: { x: 102, y: 6, w: 30, h: 34 }, spot: { x: 117, y: 58 } },
   { id: "door", area: { x: 148, y: 262, w: 40, h: 26 }, spot: { x: 168, y: 254 } },
 ];
 const SOLIDS: Rect[] = [
-  ...OBJECTS.filter(({ id }) => id !== "door").map(({ area }) => area),
+  ...OBJECTS.filter(({ id }) => id !== "door" && id !== "board").map(({ area }) => area),
   { x: 284, y: 240, w: 26, h: 22 }, // plant
   { x: 20, y: 236, w: 22, h: 26 }, // brewing jug
 ];
@@ -186,8 +187,12 @@ function drawRoom(g: Graphics) {
   rect(0x5b3a24, 137, 35, 62, 3);
 
   // Waveform and speaker posters.
-  box(rect, 105, 9, 24, 20, 0xd9c9a8, 0xeadcc0, 0xc2b08f);
-  [3, 7, 11, 5, 9, 12, 6, 3].forEach((h, i) => rect(0x7c3f3a, 108 + i * 2.5, 19 - h / 2, 1.5, h));
+  box(rect, 103, 7, 28, 25, 0xb98a55, 0xcfa26c, 0x9c7240);
+  rect(0xf1e3c6, 106, 10, 8, 7);
+  rect(0x9fd0d9, 117, 10, 10, 6);
+  rect(0xf7d98a, 107, 20, 9, 8);
+  rect(0xe8a5a0, 119, 19, 9, 8);
+  [[109, 10], [121, 10], [110, 20], [122, 19]].forEach(([x, y]) => rect(0xb0473f, x, y, 2, 2));
   box(rect, 207, 9, 20, 20, 0x4f7a9d, 0x6793b6, 0x3f6885);
   rect(0xe6b34a, 212, 14, 10, 10);
   rect(0x4f7a9d, 214, 16, 6, 6);
@@ -312,6 +317,7 @@ export function createGame(
     private cursorBlink!: PhaserNamespace.GameObjects.Rectangle;
     private screen!: Graphics;
     private fallenBook!: Graphics;
+    private looseNote!: Graphics;
     private openDoor!: Graphics;
     private darkness!: PhaserNamespace.GameObjects.Rectangle;
     private bubbleTweens: PhaserNamespace.Tweens.Tween[] = [];
@@ -345,6 +351,11 @@ export function createGame(
       bookRect(0x4f7a9d, 262, 220, 16, 9);
       bookRect(0xf1e3c6, 263, 228, 14, 1);
       bookRect(0xe6b34a, 267, 223, 6, 2);
+
+      this.looseNote = this.add.graphics();
+      const noteRect = makeRect(this.looseNote);
+      noteRect(0x21161d, 116, 33, 11, 8);
+      noteRect(0xf1e3c6, 117, 34, 9, 6);
 
       this.openDoor = this.add.graphics();
       const doorRect = makeRect(this.openDoor);
@@ -524,6 +535,7 @@ export function createGame(
       }
 
       this.fallenBook.setVisible(!done.has("books"));
+      this.looseNote.setVisible(!done.has("board"));
       if (night && !this.nightShown) {
         this.nightShown = true;
         this.openDoor.setVisible(true);
