@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.dannymportfolio.com"),
   title: "Daniel McGrath | Software Engineer in Boston, MA",
-  description: "Daniel McGrath is a software engineer based in Boston, MA. See projects and work experience at MEDITECH, WHOOP, Criteo, and DEVIL-TECH.",
+  description: "Daniel McGrath is a software engineer based in Boston, MA. See projects and work experience at Klaviyo, DeVil-Tech, Criteo, WHOOP, and MEDITECH.",
   alternates: { canonical: "/" },
   openGraph: {
     title: "Daniel McGrath | Software Engineer in Boston, MA",

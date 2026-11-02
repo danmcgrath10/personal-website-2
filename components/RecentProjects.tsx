@@ -14,15 +14,17 @@ const RecentProjects = () => {
             {projects.map((project) => (
                 <CardContainer className="inter-var" key={project.id}>
                     <CardBody className="relative group/card  dark:hover:shadow-2xl bg-black-100 w-auto sm:w-[30rem] h-auto rounded-xl p-6 border  ">
-                        <CardItem translateZ="100" className="w-full mt-4">
-                            <Image
-                                src={project.img}
-                                height="1000"
-                                width="1000"
-                                className="h-60 w-full object-cover rounded-xl group-hover/card:shadow-xl"
-                                alt="thumbnail"
-                            />
-                        </CardItem>
+                        {project.img && (
+                            <CardItem translateZ="100" className="w-full mt-4">
+                                <Image
+                                    src={project.img}
+                                    height="1000"
+                                    width="1000"
+                                    className="h-60 w-full object-cover rounded-xl group-hover/card:shadow-xl"
+                                    alt={`${project.title} screenshot`}
+                                />
+                            </CardItem>
+                        )}
                         <CardItem
                             translateZ="50"
                             className="text-xl font-bold text-neutral-600 dark:text-white"
@@ -56,6 +58,18 @@ const RecentProjects = () => {
                                     ))}
                                 </div>
                             </CardItem>
+                            {project.link && (
+                                <CardItem
+                                    translateZ={20}
+                                    as="a"
+                                    href={project.link}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="px-4 py-2 rounded-xl text-xs font-normal text-purple"
+                                >
+                                    View on GitHub
+                                </CardItem>
+                            )}
                         </div>
                     </CardBody>
                 </CardContainer>
