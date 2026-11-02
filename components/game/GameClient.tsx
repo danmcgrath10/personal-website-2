@@ -17,6 +17,7 @@ export default function GameClient() {
   const [openId, setOpenId] = useState<string | null>(null);
   const [found, setFound] = useState<string[]>([]);
   const [finished, setFinished] = useState(false);
+  const [typed, setTyped] = useState(0);
 
   useEffect(() => {
     setTouch(window.matchMedia("(pointer: coarse)").matches);
@@ -45,10 +46,32 @@ export default function GameClient() {
     if (dialogOpen) closeButton.current?.focus();
   }, [dialogOpen]);
 
+  const open = text.objects.find(({ id }) => id === openId);
+  const line = dialogOpen ? (open?.line ?? text.finishedLine) : "";
+
+  useEffect(() => {
+    if (!line || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setTyped(line.length);
+      return;
+    }
+    setTyped(0);
+    const timer = window.setInterval(() => {
+      setTyped((count) => {
+        if (count >= line.length) window.clearInterval(timer);
+        return count + 1;
+      });
+    }, 18);
+    return () => window.clearInterval(timer);
+  }, [line]);
+
   useEffect(() => {
     if (!dialogOpen) return;
     const onKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape" || event.key.toLowerCase() === "e") close();
+      if (event.key === "Escape") close();
+      if (event.key.toLowerCase() === "e") {
+        if (typed < line.length) setTyped(line.length);
+        else close();
+      }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -70,7 +93,6 @@ export default function GameClient() {
   }
 
   const near = text.objects.find(({ id }) => id === nearId);
-  const open = text.objects.find(({ id }) => id === openId);
   const button = "rounded-lg border border-white/30 px-3 py-2 text-sm text-white bg-black/40";
 
   return (
@@ -112,7 +134,13 @@ export default function GameClient() {
           className="absolute inset-x-3 bottom-3 mx-auto max-w-xl rounded-xl border-2 border-[#e6b34a] bg-[#2b1d27] p-4"
         >
           <h2 className="font-semibold first-letter:uppercase">{open?.name ?? text.finishedTitle}</h2>
-          <p className="mt-2 text-sm leading-relaxed">{open?.line ?? text.finishedLine}</p>
+          <p className="mt-2 text-sm leading-relaxed">
+            <span className="sr-only">{line}</span>
+            <span aria-hidden="true">
+              {line.slice(0, typed)}
+              <span className="invisible">{line.slice(typed)}</span>
+            </span>
+          </p>
           <div className="mt-3 flex flex-wrap items-center gap-2">
             {(open?.links ?? site.links).map(({ label, url }) => (
               <a key={label} href={url} className={button} target="_blank" rel="noreferrer">

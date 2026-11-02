@@ -30,7 +30,58 @@ const OBJECTS: RoomObject[] = [
   { id: "books", area: { x: 292, y: 130, w: 28, h: 84 }, spot: { x: 278, y: 172 } },
   { id: "door", area: { x: 148, y: 262, w: 40, h: 26 }, spot: { x: 168, y: 254 } },
 ];
-const SOLIDS: Rect[] = OBJECTS.filter(({ id }) => id !== "door").map(({ area }) => area);
+const SOLIDS: Rect[] = [
+  ...OBJECTS.filter(({ id }) => id !== "door").map(({ area }) => area),
+  { x: 284, y: 240, w: 26, h: 22 }, // plant
+  { x: 20, y: 236, w: 22, h: 26 }, // brewing jug
+];
+
+type Direction = "down" | "up" | "side";
+
+function drawCharacter(ctx: CanvasRenderingContext2D, direction: Direction, step: number) {
+  const rect = (color: string, x: number, y: number, w: number, h: number) => {
+    ctx.fillStyle = color;
+    ctx.fillRect(x, y, w, h);
+  };
+  const skin = "#e9bd96";
+  const hair = "#4a2f1d";
+  const shirt = "#3b6ea5";
+  const shirtDark = "#2f5885";
+  const pants = "#2b3a55";
+  const shoes = "#1c1d24";
+  const stride = step === 1 ? 1 : step === 3 ? -1 : 0;
+
+  if (direction === "side") {
+    rect(pants, 5, 16, 4, 5);
+    rect(shoes, 5 + stride * 2, 20, 5, 2);
+    rect(pants, 5 + stride, 16, 4, 4);
+    rect(shirt, 4, 9, 7, 8);
+    rect(shirtDark, 5 - stride, 10, 3, 6);
+    rect(skin, 3, 1, 9, 8);
+    rect(hair, 3, 0, 9, 3);
+    rect(hair, 3, 0, 3, 7);
+    rect(shoes, 9, 4, 1, 2);
+    return;
+  }
+
+  rect(pants, 3, 16, 3, 5 - Math.max(stride, 0));
+  rect(pants, 8, 16, 3, 5 - Math.max(-stride, 0));
+  rect(shoes, 3, 20 - Math.max(stride, 0), 3, 2);
+  rect(shoes, 8, 20 - Math.max(-stride, 0), 3, 2);
+  rect(shirt, 2, 9, 10, 8);
+  rect(shirtDark, 1, 10 + Math.max(stride, 0), 1, 5);
+  rect(shirtDark, 12, 10 + Math.max(-stride, 0), 1, 5);
+  rect(skin, 2, 1, 10, 8);
+  rect(hair, 2, 0, 10, 3);
+  if (direction === "up") {
+    rect(hair, 2, 0, 10, 8);
+  } else {
+    rect(hair, 2, 0, 1, 5);
+    rect(hair, 11, 0, 1, 5);
+    rect(shoes, 4, 5, 1, 2);
+    rect(shoes, 9, 5, 1, 2);
+  }
+}
 
 const inRect = (x: number, y: number, r: Rect) =>
   x >= r.x && x <= r.x + r.w && y >= r.y && y <= r.y + r.h;
@@ -69,6 +120,32 @@ function drawRoom(g: PhaserNamespace.GameObjects.Graphics) {
   rect(0x2b1d27, 320, 0, 16, HEIGHT);
   rect(0x2b1d27, 0, 272, WIDTH, 16);
 
+  // Window with a night sky.
+  rect(0x2b1d27, 138, 4, 60, 32);
+  rect(0x1b2a4a, 141, 7, 54, 26);
+  rect(0xf4e7b0, 178, 10, 8, 8);
+  rect(0x1b2a4a, 176, 9, 5, 6);
+  [[147, 12], [156, 22], [166, 11], [188, 26], [151, 29]].forEach(([x, y]) =>
+    rect(0xd6e4ff, x, y, 1, 1)
+  );
+  rect(0x2b1d27, 167, 7, 2, 26);
+  rect(0x2b1d27, 141, 19, 54, 2);
+
+  // Waveform posters.
+  rect(0x2b1d27, 104, 8, 26, 22);
+  rect(0xd9c9a8, 106, 10, 22, 18);
+  [3, 7, 11, 5, 9, 12, 6, 3].forEach((h, i) => rect(0x7c3f3a, 108 + i * 2.5, 19 - h / 2, 1.5, h));
+  rect(0x2b1d27, 206, 8, 22, 22);
+  rect(0x4f7a9d, 208, 10, 18, 18);
+  rect(0xe6b34a, 213, 15, 8, 8);
+  rect(0x4f7a9d, 215, 17, 4, 4);
+
+  // Furniture shadows.
+  rect(0x5f3c26, 26, 84, 70, 4);
+  rect(0x5f3c26, 234, 84, 78, 4);
+  rect(0x5f3c26, 44, 134, 4, 80);
+  rect(0x5f3c26, 288, 134, 4, 80);
+
   // Rug.
   rect(0x7c3f3a, 100, 120, 136, 92);
   rect(0xc98f4e, 106, 126, 124, 80);
@@ -83,6 +160,13 @@ function drawRoom(g: PhaserNamespace.GameObjects.Graphics) {
   rect(0xd6f1f7, 50, 50, 18, 2);
   rect(0x23262f, 56, 62, 8, 4);
   rect(0x3a3d48, 42, 70, 36, 6);
+  rect(0xe8e2d0, 84, 66, 6, 6);
+  rect(0x8a5a3a, 85, 67, 4, 2);
+
+  // Desk lamp.
+  rect(0x23262f, 31, 58, 2, 6);
+  rect(0x23262f, 27, 64, 10, 2);
+  rect(0xe6b34a, 27, 53, 10, 5);
 
   // Mixing desk with speakers.
   rect(0x5b3a24, 232, 62, 80, 22);
@@ -126,6 +210,13 @@ function drawRoom(g: PhaserNamespace.GameObjects.Graphics) {
   rect(0x9a5b3d, 288, 244, 18, 18);
   rect(0x4f8a4f, 284, 226, 26, 20);
   rect(0x6aa96a, 291, 218, 12, 12);
+
+  // Brewing jug on the floor.
+  rect(0x5f3c26, 22, 258, 22, 4);
+  rect(0xc77d2e, 22, 240, 20, 20);
+  rect(0xe6a93c, 24, 242, 16, 14);
+  rect(0xc9d4d6, 29, 232, 6, 8);
+  rect(0x8a5a3a, 30, 228, 4, 4);
 }
 
 export function createGame(
@@ -138,40 +229,51 @@ export function createGame(
   let interactNow = () => {};
 
   class WorkshopScene extends Phaser.Scene {
-    private player!: PhaserNamespace.GameObjects.Graphics;
+    private player!: PhaserNamespace.GameObjects.Image;
+    private shadow!: PhaserNamespace.GameObjects.Ellipse;
+    private highlight!: PhaserNamespace.GameObjects.Graphics;
+    private meters!: PhaserNamespace.GameObjects.Graphics;
+    private cursorBlink!: PhaserNamespace.GameObjects.Rectangle;
     private keys!: Record<string, PhaserNamespace.Input.Keyboard.Key>;
     private markers = new Map<string, PhaserNamespace.GameObjects.Graphics>();
+    private celebrated = new Set<string>();
     private target: { x: number; y: number } | null = null;
     private pendingId: string | null = null;
     private nearId: string | null = null;
+    private direction: Direction = "down";
+    private walkTime = 0;
+    private dustTime = 0;
+    private reduceMotion = false;
 
     create() {
+      this.reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       drawRoom(this.add.graphics());
+      this.addGlow(32, 58, 30, 0xffc966);
+      this.addGlow(168, 36, 36, 0x7f9fd9);
+      this.addBubbles();
 
-      const shadow = this.add.graphics();
-      shadow.fillStyle(0x000000, 0.25);
-      shadow.fillEllipse(0, 0, 14, 6);
-      this.player = this.add.graphics();
-      this.player.fillStyle(0x3b6ea5);
-      this.player.fillRect(-5, -12, 10, 12);
-      this.player.fillStyle(0x2b3a55);
-      this.player.fillRect(-5, -2, 4, 5);
-      this.player.fillRect(1, -2, 4, 5);
-      this.player.fillStyle(0xe9bd96);
-      this.player.fillRect(-5, -22, 10, 10);
-      this.player.fillStyle(0x4a2f1d);
-      this.player.fillRect(-5, -24, 10, 5);
-      this.player.setData("shadow", shadow);
-      this.player.setPosition(168, 190);
+      this.meters = this.add.graphics();
+      this.cursorBlink = this.add.rectangle(66, 51, 3, 2, 0xd6f1f7);
+      this.highlight = this.add.graphics();
 
-      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      (["down", "up", "side"] as Direction[]).forEach((direction) => {
+        for (let step = 0; step < 4; step++) {
+          const texture = this.textures.createCanvas(`player-${direction}-${step}`, 14, 22);
+          drawCharacter(texture!.getContext(), direction, step);
+          texture!.refresh();
+        }
+      });
+      this.shadow = this.add.ellipse(168, 193, 14, 6, 0x000000, 0.28);
+      this.player = this.add.image(168, 190, "player-down-0").setOrigin(0.5, 0.86);
+
       OBJECTS.forEach(({ id, area }) => {
         const marker = this.add.graphics();
         marker.fillStyle(0xffe08a);
         marker.fillTriangle(-5, -7, 5, -7, 0, 0);
         marker.setPosition(area.x + area.w / 2, Math.max(area.y - 2, 14));
+        marker.setDepth(1000);
         this.markers.set(id, marker);
-        if (!reduceMotion) {
+        if (!this.reduceMotion) {
           this.tweens.add({ targets: marker, y: marker.y - 4, duration: 500, yoyo: true, repeat: -1 });
         }
       });
@@ -204,11 +306,111 @@ export function createGame(
         const object = OBJECTS.find(({ area }) => inRect(pointer.worldX, pointer.worldY, area));
         this.pendingId = object?.id ?? null;
         this.target = object ? { ...object.spot } : { x: pointer.worldX, y: pointer.worldY };
+        this.ping(pointer.worldX, pointer.worldY);
       });
     }
 
-    update(_time: number, delta: number) {
-      this.markers.forEach((marker, id) => marker.setVisible(!found.has(id)));
+    private addGlow(x: number, y: number, radius: number, color: number) {
+      const glow = this.add.graphics();
+      glow.setBlendMode(Phaser.BlendModes.ADD);
+      for (let scale = 1; scale > 0.1; scale -= 0.1) {
+        glow.fillStyle(color, 0.018);
+        glow.fillCircle(x, y, radius * scale);
+      }
+      if (!this.reduceMotion) {
+        this.tweens.add({ targets: glow, alpha: 0.65, duration: 1400, yoyo: true, repeat: -1 });
+      }
+    }
+
+    private addBubbles() {
+      for (let i = 0; i < 3; i++) {
+        const bubble = this.add.rectangle(27 + i * 5, 256, 2, 2, 0xfff0c2);
+        if (this.reduceMotion) {
+          bubble.y = 248 + i * 3;
+          continue;
+        }
+        this.tweens.add({
+          targets: bubble,
+          y: 243,
+          alpha: 0.2,
+          duration: 1500 + i * 400,
+          delay: i * 500,
+          repeat: -1,
+        });
+      }
+    }
+
+    private ping(x: number, y: number) {
+      const ring = this.add.circle(x, y, 3).setStrokeStyle(1, 0xffe08a).setDepth(999);
+      this.tweens.add({
+        targets: ring,
+        scale: 2.5,
+        alpha: 0,
+        duration: 300,
+        onComplete: () => ring.destroy(),
+      });
+    }
+
+    private burst(x: number, y: number) {
+      if (this.reduceMotion) return;
+      for (let i = 0; i < 14; i++) {
+        const angle = (i / 14) * Math.PI * 2;
+        const distance = 18 + (i % 3) * 8;
+        const spark = this.add
+          .rectangle(x, y, 2, 2, i % 2 ? 0xffe08a : 0xffffff)
+          .setDepth(1001);
+        this.tweens.add({
+          targets: spark,
+          x: x + Math.cos(angle) * distance,
+          y: y + Math.sin(angle) * distance,
+          alpha: 0,
+          duration: 550,
+          ease: "Cubic.easeOut",
+          onComplete: () => spark.destroy(),
+        });
+      }
+    }
+
+    private dust() {
+      const puff = this.add.rectangle(this.player.x, this.player.y + 3, 2, 2, 0xd9c9a8, 0.6);
+      this.tweens.add({
+        targets: puff,
+        y: puff.y - 3,
+        alpha: 0,
+        duration: 320,
+        onComplete: () => puff.destroy(),
+      });
+    }
+
+    private drawLiveDetails(time: number) {
+      this.meters.clear();
+      for (let i = 0; i < 6; i++) {
+        const level = this.reduceMotion ? 4 : 3 + Math.abs(Math.sin(time / (170 + i * 37))) * 7;
+        this.meters.fillStyle(i % 2 ? 0xe6b34a : 0x6fc3d9);
+        this.meters.fillRect(255 + i * 6, 76 - level, 4, 2);
+      }
+      this.cursorBlink.setVisible(this.reduceMotion || Math.floor(time / 500) % 2 === 0);
+
+      this.highlight.clear();
+      const near = OBJECTS.find(({ id }) => id === this.nearId);
+      if (near && !paused) {
+        const { x, y, w, h } = near.area;
+        const alpha = this.reduceMotion ? 0.9 : 0.55 + Math.sin(time / 180) * 0.35;
+        this.highlight.lineStyle(1, 0xffe08a, alpha);
+        this.highlight.strokeRect(x - 1, y - 1, w + 2, h + 2);
+      }
+    }
+
+    update(time: number, delta: number) {
+      this.drawLiveDetails(time);
+      this.markers.forEach((marker, id) => {
+        marker.setVisible(!found.has(id));
+        if (found.has(id) && !this.celebrated.has(id)) {
+          this.celebrated.add(id);
+          const { area } = OBJECTS.find((object) => object.id === id)!;
+          this.burst(area.x + area.w / 2, area.y + area.h / 2);
+        }
+      });
       if (paused) return;
 
       const step = (SPEED * delta) / 1000;
@@ -241,9 +443,30 @@ export function createGame(
           this.target = null;
         }
       }
-      const shadow = this.player.getData("shadow") as PhaserNamespace.GameObjects.Graphics;
-      shadow.setPosition(this.player.x, this.player.y + 3);
+
+      const moving = before.x !== this.player.x || before.y !== this.player.y;
+      if (moving) {
+        if (Math.abs(dx) > Math.abs(dy)) {
+          this.direction = "side";
+          this.player.setFlipX(dx < 0);
+        } else {
+          this.direction = dy < 0 ? "up" : "down";
+          this.player.setFlipX(false);
+        }
+        this.walkTime += delta;
+        this.dustTime += delta;
+        if (this.dustTime > 260 && !this.reduceMotion) {
+          this.dustTime = 0;
+          this.dust();
+        }
+      } else {
+        this.walkTime = 0;
+      }
+      const frame = moving ? Math.floor(this.walkTime / 130) % 4 : 0;
+      this.player.setTexture(`player-${this.direction}-${frame}`);
+      this.shadow.setPosition(this.player.x, this.player.y + 3);
       this.player.setDepth(this.player.y);
+      this.shadow.setDepth(this.player.y - 1);
 
       const near =
         OBJECTS.find(
